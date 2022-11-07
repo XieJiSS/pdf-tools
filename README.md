@@ -1,6 +1,6 @@
 # pdf-tools
 
-Install PyPDF2 and pdfrw via `python3 -m pip install requirements.txt`. Also install qpdf before using any script. Make sure qpdf can be found directly in your `PATH`.
+Install PyPDF2 and pdfrw via `python3 -m pip install -r requirements.txt`. Also install qpdf before using any script. Make sure qpdf can be found directly in your `PATH`.
 
 `remove_image.py` combines PyPDF2 and pdfrw's functionalities to achieve a better result. All scripts uses qpdf to produce a linearized PDF result that displays faster under bad network condition.
 
