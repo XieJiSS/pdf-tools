@@ -5,10 +5,16 @@ from io import StringIO
 
 
 help_msg = r"""Usage:
-$ python3 side_by_side.py <input1.pdf> <input2.pdf>
+$ python3 side_by_side.py <input1.pdf> <input2.pdf> [args]
+
+Arguments:
+  --no-blank-cover     Do not add a blank cover page to the result PDF.
+
+Note: [args], if provided, must be at the tail of the argument list.
 """
 
 result_filename = "pdfs/side_by_side_merged.pdf"
+blank_cover = True
 
 
 def merge_side_by_side(pdf_filename1, pdf_filename2):
@@ -50,6 +56,11 @@ def main():
 
     pdf_filename1 = sys.argv[1]
     pdf_filename2 = sys.argv[2]
+
+    global blank_cover
+    if len(sys.argv) == 4 and sys.argv[3] == "--no-blank-cover":
+        blank_cover = False
+
     print(f"Merging {pdf_filename1} and {pdf_filename2}...")
     merge_side_by_side(pdf_filename1, pdf_filename2)
     print(f"Result PDF saved as {result_filename}")
