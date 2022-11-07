@@ -11,7 +11,7 @@ $ ls -alh ./pdfs
 -rw-r--r--   1 host  staff   9.7M Nov  7 11:20 image_removed_pypdf2_only.pdf
 -rw-r--r--   1 host  staff   956K Nov  7 11:20 image_removed_pypdf2_pdfrw.pdf
 $ python3 remove_image.py --aggressive "./pdfs/For Space OCR.pdf"
-$ ls -alh ./pdfs/image_removed.pdf
+$ ls -alh ./pdfs/image_removed_pypdf2_aggressive_pdfrw.pdf
 -rw-r--r--   1 host  staff   699K Nov  7 11:21 image_removed_pypdf2_aggressive_pdfrw.pdf
 ```
 
