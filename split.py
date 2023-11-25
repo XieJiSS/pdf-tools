@@ -1,6 +1,6 @@
 import sys
 import os
-from PyPDF2 import PdfFileWriter, PdfFileReader
+from PyPDF2 import PdfWriter as PdfFileWriter, PdfReader as PdfFileReader
 
 help_msg = r"""Usage:
 $ python3 split.py <input.pdf> <start_page> <end_page>
@@ -22,7 +22,7 @@ def split_pdf(pdf_filename, result_filename, start_page, end_page):
 
     for i in range(start_page, end_page):
         page = input_pdf.pages[i]
-        output_pdf.addPage(page)
+        output_pdf.add_page(page)
 
     output_pdf.remove_images()
     output_pdf.add_metadata(input_pdf.metadata or {})

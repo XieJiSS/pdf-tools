@@ -2,7 +2,7 @@ import sys
 import os
 import argparse
 from io import StringIO
-from PyPDF2 import PdfFileWriter, PdfFileReader
+from PyPDF2 import PdfWriter as PdfFileWriter, PdfReader as PdfFileReader
 from pdfrw import PdfReader, PdfWriter, PdfDict, PdfArray, PdfName
 
 parser = argparse.ArgumentParser(
@@ -77,22 +77,28 @@ def remove_image(pdf_filename, aggressive=False):
     params:
         pdf_filename: the pdf file to remove image
     """
-    input_pdf = PdfFileReader(open(pdf_filename, "rb"), strict=False)
+
+    print("Linearizing input PDF...")
+    os.system(f"qpdf --linearize --replace-input \"{pdf_filename}\"")
+
+    input_pdf = PdfFileReader(open(pdf_filename, "rb"), strict=True)
     output_pdf = PdfFileWriter()
 
     for i in range(len(input_pdf.pages)):
         page = input_pdf.pages[i]
-        output_pdf.addPage(page)
+        output_pdf.add_page(page)
 
-    output_pdf.remove_images(ignore_byte_string_object=aggressive)
+    # output_pdf.remove_images(ignore_byte_string_object=aggressive)
+    # output_pdf.remove_images()
 
     output_pdf.add_metadata(input_pdf.metadata or {})
 
     with open(result_filename, "wb") as outputStream:
-        sys.stderr = StringIO()  # to suppress warnings
+        # sys.stderr = StringIO()  # to suppress warnings
         output_pdf.write(outputStream)
-        sys.stderr = sys.__stderr__
+        # sys.stderr = sys.__stderr__
 
+    print("Linearizing result PDF...")
     os.system(f"qpdf --linearize --replace-input \"{result_filename}\"")
 
 
@@ -184,7 +190,6 @@ def strip_objects(pdf, heuristic_compare_info_obj_list, compare_keys=("Width", "
                         print(
                             f"P{i} - object {obj_id} has matching nested objects but cannot be deleted due to side-effects. Specify -f to ignore this.")
                 else:
-
                     does_obj_match = True
 
                     for key in compare_keys:
@@ -236,7 +241,6 @@ def main():
             })
 
     print(f"Stripping /Image /XObjects larger than {arg_strip_size}...")
-    print(strip_obj_info_list)
     strip_objects(result_pdf, strip_obj_info_list)
 
     PdfWriter().write(result_filename, result_pdf)

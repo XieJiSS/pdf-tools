@@ -1,6 +1,6 @@
 import sys
 import os
-from PyPDF2 import PdfFileWriter, PdfFileReader
+from PyPDF2 import PdfWriter as PdfFileWriter, PdfReader as PdfFileReader
 from io import StringIO
 
 
@@ -36,8 +36,8 @@ def merge_side_by_side(pdf_filename1, pdf_filename2):
     for i in range(len(input_pdf1.pages)):
         page1 = input_pdf1.pages[i]
         page2 = input_pdf2.pages[i]
-        output_pdf.addPage(page1)
-        output_pdf.addPage(page2)
+        output_pdf.add_page(page1)
+        output_pdf.add_page(page2)
 
     output_pdf.add_metadata(input_pdf1.metadata or input_pdf2.metadata or {})
 

@@ -1,6 +1,6 @@
 import sys
 import os
-from PyPDF2 import PdfFileWriter, PdfFileReader
+from PyPDF2 import PdfWriter as PdfFileWriter, PdfReader as PdfFileReader
 
 help_msg = r"""Usage:
 $ python3 concat.py <input1.pdf> <input2.pdf> <input3.pdf>...
@@ -26,7 +26,7 @@ def concat_pdf(pdf_filenames):
 
         for i in range(len(input_pdf.pages)):
             page = input_pdf.pages[i]
-            output_pdf.addPage(page)
+            output_pdf.add_page(page)
 
     output_pdf.add_metadata(metadata)
 
