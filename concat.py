@@ -9,7 +9,7 @@ $ python3 concat.py <input1.pdf> <input2.pdf> <input3.pdf>...
 result_filename = "pdfs/concated.pdf"
 
 
-def concat_pdf(pdf_filenames):
+def concat_pdf(pdf_filenames, /, output_pdf_name = result_filename):
     """
     Concat multiple pdf files into one pdf file.
     params:
@@ -19,7 +19,11 @@ def concat_pdf(pdf_filenames):
     metadata = {}
 
     for pdf_filename in pdf_filenames:
-        input_pdf = PdfFileReader(open(pdf_filename, "rb"))
+        try:
+            input_pdf = PdfFileReader(open(pdf_filename, "rb"))
+        except Exception as e:
+            print(f"Warning: failed to open {pdf_filename} due to {e}. Skipping...")
+            continue
 
         if input_pdf.metadata:
             metadata = input_pdf.metadata
@@ -30,10 +34,10 @@ def concat_pdf(pdf_filenames):
 
     output_pdf.add_metadata(metadata)
 
-    with open(result_filename, "wb") as outputStream:
-        output_pdf.write(outputStream)
+    with open(output_pdf_name, "wb") as output_stream:
+        output_pdf.write(output_stream)
 
-    os.system(f"qpdf --linearize --replace-input \"{result_filename}\"")
+    os.system(f"qpdf --linearize --replace-input \"{output_pdf_name}\"")
 
 
 def main():
@@ -48,5 +52,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-else:
-    print("This script is not intended to be imported.")
